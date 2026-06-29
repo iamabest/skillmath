@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xác suất & Thống kê - Lớp 6–12 | SkillMath9</title>
+  <meta name="description" content="Mô phỏng xác suất thống kê: tung đồng xu, gieo xúc xắc, biểu đồ tần số – cho học sinh lớp 6 đến 12.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    /* ── Tab bar ── */
+    .tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .tab-btn {
+      padding: 0.45rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .tab-btn:hover { color: var(--text-primary); border-color: rgba(59,130,246,0.4); }
+
+    .tab-btn.active {
+      background: rgba(59,130,246,0.15);
+      color: #60a5fa;
+      border-color: var(--color-primary);
+    }
+
+    /* ── Panels ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Sim layout ── */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 820px) {
+      .sim-layout { grid-template-columns: 1fr; }
+    }
+
+    .canvas-wrap {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    canvas {
+      border-radius: 0.5rem;
+      max-width: 100%;
+    }
+
+    .right-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.6rem 1.3rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      box-shadow: 0 0 10px rgba(59,130,246,0.3);
+    }
+
+    .btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 16px rgba(59,130,246,0.5); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .btn-secondary:hover { color: var(--text-primary); background: rgba(255,255,255,0.1); }
+
+    /* ── Stats grid ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .stat-box {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.7rem 0.9rem;
+      text-align: center;
+    }
+
+    .stat-box .label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-box .value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 0.2rem;
+    }
+
+    .stat-box .sub {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+    }
+
+    /* ── Coin ── */
+    .coin-row {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .coin-display {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      font-weight: 900;
+      border: 4px solid rgba(255,255,255,0.15);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.3s;
+      user-select: none;
+    }
+
+    .coin-heads {
+      background: radial-gradient(circle at 35% 35%, #fde68a, #d97706);
+      color: #78350f;
+      box-shadow: 0 0 20px rgba(245,158,11,0.4);
+    }
+
+    .coin-tails {
+      background: radial-gradient(circle at 35% 35%, #e2e8f0, #94a3b8);
+      color: #334155;
+      box-shadow: 0 0 20px rgba(148,163,184,0.3);
+    }
+
+    .coin-flip { transform: rotateY(720deg) scale(1.08); }
+
+    /* ── Dice ── */
+    .dice-display {
+      width: 90px;
+      height: 90px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 30% 30%, #f8fafc, #cbd5e1);
+      display: grid;
+      grid-template-areas:
+        "a . b"
+        "c d e"
+        "f . g";
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      padding: 10px;
+      gap: 4px;
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.5);
+      transition: transform 0.35s ease;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #1e293b;
+      align-self: center;
+      justify-self: center;
+      display: none;
+    }
+
+    .dice-display.rolling { animation: diceRoll 0.4s ease; }
+
+    @keyframes diceRoll {
+      0%   { transform: rotate(0deg) scale(1); }
+      25%  { transform: rotate(-20deg) scale(1.1); }
+      50%  { transform: rotate(15deg) scale(0.95); }
+      75%  { transform: rotate(-10deg) scale(1.05); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    /* ── Speed slider ── */
+    .speed-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    /* ── History bar ── */
+    .history-bar {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      max-height: 60px;
+      overflow-y: auto;
+    }
+
+    .hist-chip {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hist-H { background: rgba(245,158,11,0.25); color: #fbbf24; }
+    .hist-T { background: rgba(148,163,184,0.2); color: #94a3b8; }
+    .hist-d { background: rgba(59,130,246,0.2);  color: #60a5fa; }
+
+    /* ── Bar chart canvas ── */
+    #chartCanvas { background: transparent; }
+
+    /* ── Info box reuse ── */
+    .info-box {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.85rem 1rem;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .info-box strong { color: var(--text-primary); }
+
+    /* ── Formula ── */
+    .formula-box {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #60a5fa;
+    }
+
+    .formula-box .fl { color: var(--text-secondary); font-size: 0.72rem; text-transform: uppercase; font-weight: 600; }
+
+    /* ── Grade badge ── */
+    .grade-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.25);
+      color: #34d399;
+      border-radius: 9999px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* ── Number input ── */
+    .num-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 0.4rem;
+      color: var(--text-primary);
+      padding: 0.35rem 0.6rem;
+      font-size: 0.875rem;
+      width: 80px;
+    }
+
+    /* ── Run-many controls ── */
+    .run-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+
+  <main>
+
+
+    <!-- Tab bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="coin">🪙 Đồng xu</button>
+      <button class="tab-btn" data-tab="dice">🎲 Xúc xắc</button>
+      <button class="tab-btn" data-tab="freq">📊 Biểu đồ tần số</button>
+      <button class="tab-btn" data-tab="desc">📐 Thống kê mô tả</button>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ COIN -->
+    <div id="panel-coin" class="tab-panel active">
+      <div class="sim-layout">
+        <div class="canvas-wrap">
+          <h3 style="font-size:1.1rem;align-self:flex-start;">🪙 Mô phỏng Tung đồng xu</h3>
+
+          <div class="coin-row">
+            <!-- Coin 1 -->
+            <div style="text-align:center;">
+              <div class="coin-display coin-heads" id="coin1">Số</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.4rem;">Đồng xu 1</div>
+            </div>
+            <!-- Coin 2 (optional) -->
+            <div style="text-align:center;" id="coin2wrap">
+              <div class="coin-display coin-heads" id="coin2">Số</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.4rem;">Đồng xu 2</div>
+            </div>
+          </div>
+
+          <div class="run-row">
+            <button class="btn-primary" id="coinFlipBtn">🪙 Tung 1 lần</button>
+            <input type="number" class="num-input" id="coinRepeat" value="50" min="1" max="1000" title="Số lần tung">
+            <button class="btn-secondary" id="coinMultiBtn">Tung nhiều lần</button>
+            <button class="btn-secondary" id="coinResetBtn">↺ Đặt lại</button>
+          </div>
+
+          <!-- History chips -->
+          <div style="width:100%;">
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.35rem;">Lịch sử gần nhất (50 lần)</div>
+            <div class="history-bar" id="coinHistory"></div>
+          </div>
+
+          <!-- Bar chart -->
+          <canvas id="coinChart" width="440" height="180"></canvas>
+        </div>
+
+        <div class="right-panel">
+          <div>
+            <span class="grade-badge">📚 Lớp 6–8</span>
+            <h3 style="font-size:1rem;margin-top:0.6rem;border-bottom:1px solid var(--border-color);padding-bottom:0.5rem;">Thống kê</h3>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="label">Số lần tung</div>
+              <div class="value" id="coinTotal">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Mặt Số (H)</div>
+              <div class="value" id="coinHeads" style="color:#fbbf24;">0</div>
+              <div class="sub" id="coinHeadsPct">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Mặt Chữ (T)</div>
+              <div class="value" id="coinTails" style="color:#94a3b8;">0</div>
+              <div class="sub" id="coinTailsPct">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Số đồng xu</div>
+              <select id="coinCount" style="background:transparent;color:var(--text-primary);border:none;font-size:1rem;font-weight:700;cursor:pointer;">
+                <option value="1">1 xu</option>
+                <option value="2">2 xu</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="formula-box">
+            <div class="fl">Công thức xác suất</div>
+            P(sự kiện) = <strong>số kết quả thuận lợi</strong> / <strong>tổng số kết quả</strong>
+            <br>P(Số) = P(Chữ) = 1/2 = <strong>0.5</strong>
+          </div>
+
+          <div class="info-box">
+            <strong>Quy luật số lớn:</strong> Khi số lần tung tăng, tần suất xuất hiện mặt Số và mặt Chữ sẽ tiệm cận về <strong>50%</strong> — đây là nền tảng của xác suất thực nghiệm.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ DICE -->
+    <div id="panel-dice" class="tab-panel">
+      <div class="sim-layout">
+        <div class="canvas-wrap">
+          <h3 style="font-size:1.1rem;align-self:flex-start;">🎲 Mô phỏng Gieo Xúc xắc</h3>
+
+          <div style="display:flex;gap:1.5rem;align-items:center;justify-content:center;flex-wrap:wrap;">
+            <div style="text-align:center;">
+              <div class="dice-display" id="dice1">
+                <div class="dot" style="grid-area:a" id="d1a"></div>
+                <div class="dot" style="grid-area:b" id="d1b"></div>
+                <div class="dot" style="grid-area:c" id="d1c"></div>
+                <div class="dot" style="grid-area:d" id="d1d"></div>
+                <div class="dot" style="grid-area:e" id="d1e"></div>
+                <div class="dot" style="grid-area:f" id="d1f"></div>
+                <div class="dot" style="grid-area:g" id="d1g"></div>
+              </div>
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.4rem;">Xúc xắc 1</div>
+            </div>
+            <div style="text-align:center;" id="dice2wrap">
+              <div class="dice-display" id="dice2">
+                <div class="dot" style="grid-area:a" id="d2a"></div>
+                <div class="dot" style="grid-area:b" id="d2b"></div>
+                <div class="dot" style="grid-area:c" id="d2c"></div>
+                <div class="dot" style="grid-area:d" id="d2d"></div>
+                <div class="dot" style="grid-area:e" id="d2e"></div>
+                <div class="dot" style="grid-area:f" id="d2f"></div>
+                <div class="dot" style="grid-area:g" id="d2g"></div>
+              </div>
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.4rem;">Xúc xắc 2</div>
+            </div>
+          </div>
+
+          <div class="run-row">
+            <button class="btn-primary" id="diceRollBtn">🎲 Gieo 1 lần</button>
+            <input type="number" class="num-input" id="diceRepeat" value="100" min="1" max="5000" title="Số lần gieo">
+            <button class="btn-secondary" id="diceMultiBtn">Gieo nhiều lần</button>
+            <button class="btn-secondary" id="diceResetBtn">↺ Đặt lại</button>
+          </div>
+
+          <div style="width:100%;">
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.35rem;">Lịch sử gần nhất</div>
+            <div class="history-bar" id="diceHistory"></div>
+          </div>
+
+          <canvas id="diceChart" width="440" height="200"></canvas>
+        </div>
+
+        <div class="right-panel">
+          <div>
+            <span class="grade-badge">📚 Lớp 7–9</span>
+            <h3 style="font-size:1rem;margin-top:0.6rem;border-bottom:1px solid var(--border-color);padding-bottom:0.5rem;">Thống kê</h3>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="label">Số lần gieo</div>
+              <div class="value" id="diceTotal">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Số xúc xắc</div>
+              <select id="diceCount" style="background:transparent;color:var(--text-primary);border:none;font-size:1rem;font-weight:700;cursor:pointer;">
+                <option value="1">1 xúc</option>
+                <option value="2">2 xúc</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="diceFreqStats" style="display:flex;flex-direction:column;gap:0.4rem;">
+            <!-- filled by JS -->
+          </div>
+
+          <div class="formula-box">
+            <div class="fl">Xác suất lý thuyết</div>
+            P(mặt k) = 1/6 ≈ <strong>16.67%</strong>
+            <br>P(tổng = n) tùy theo số xúc xắc
+          </div>
+
+          <div class="info-box">
+            <strong>Thử nghiệm:</strong> Khi bạn gieo 600 lần, mỗi mặt sẽ xuất hiện khoảng <strong>100 lần</strong>. Biểu đồ tần số tiệm cận phân phối đều — minh họa rõ ràng xác suất cổ điển.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ FREQ CHART -->
+    <div id="panel-freq" class="tab-panel">
+      <div class="sim-layout">
+        <div class="canvas-wrap">
+          <h3 style="font-size:1.1rem;align-self:flex-start;">📊 Biểu đồ Tần số & Tần suất</h3>
+
+          <div style="width:100%;display:flex;flex-direction:column;gap:0.75rem;">
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+              <select id="freqDataset" class="num-input" style="width:auto;">
+                <option value="scores">Điểm kiểm tra (30 HS)</option>
+                <option value="heights">Chiều cao học sinh (cm)</option>
+                <option value="custom">Nhập tùy chỉnh</option>
+              </select>
+              <button class="btn-secondary" id="freqGenBtn">Tạo ngẫu nhiên</button>
+            </div>
+
+            <textarea id="freqCustomData" rows="2"
+              style="display:none;width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:0.4rem;color:var(--text-primary);padding:0.4rem 0.6rem;font-size:0.85rem;resize:vertical;"
+              placeholder="Nhập dữ liệu cách nhau bằng dấu phẩy: 5, 7, 8, 6, 9, ..."></textarea>
+
+            <button class="btn-primary" id="freqDrawBtn" style="align-self:flex-start;">📊 Vẽ biểu đồ</button>
+          </div>
+
+          <canvas id="freqChart" width="500" height="280"></canvas>
+
+          <div style="display:flex;gap:1rem;font-size:0.78rem;color:var(--text-muted);">
+            <span><span style="color:#3b82f6;">■</span> Tần số</span>
+            <span><span style="color:#10b981;">●</span> Tần suất (%)</span>
+          </div>
+        </div>
+
+        <div class="right-panel">
+          <div>
+            <span class="grade-badge">📚 Lớp 6–9</span>
+            <h3 style="font-size:1rem;margin-top:0.6rem;border-bottom:1px solid var(--border-color);padding-bottom:0.5rem;">Tổng kết</h3>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="label">Số quan sát</div>
+              <div class="value" id="freqN">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Giá trị lớn nhất</div>
+              <div class="value" id="freqMax">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Giá trị nhỏ nhất</div>
+              <div class="value" id="freqMin">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Số lớp (bins)</div>
+              <div class="value" id="freqBins">–</div>
+            </div>
+          </div>
+
+          <div class="formula-box">
+            <div class="fl">Tần suất = Tần số / n</div>
+            f<sub>i</sub> = n<sub>i</sub> / n × 100%
+          </div>
+
+          <div class="info-box" id="freqInsight">
+            Chọn bộ dữ liệu và nhấn <strong>Vẽ biểu đồ</strong> để phân tích phân phối tần số.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ DESC STATS -->
+    <div id="panel-desc" class="tab-panel">
+      <div class="sim-layout">
+        <div class="canvas-wrap">
+          <h3 style="font-size:1.1rem;align-self:flex-start;">📐 Thống kê mô tả</h3>
+
+          <div style="width:100%;display:flex;flex-direction:column;gap:0.75rem;">
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+              <select id="descDataset" class="num-input" style="width:auto;">
+                <option value="scores">Điểm kiểm tra (30 HS)</option>
+                <option value="heights">Chiều cao học sinh</option>
+                <option value="wages">Lương nhân viên (triệu)</option>
+                <option value="custom">Nhập tùy chỉnh</option>
+              </select>
+              <button class="btn-secondary" id="descGenBtn">Tạo ngẫu nhiên</button>
+            </div>
+            <textarea id="descCustomData" rows="2"
+              style="display:none;width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:0.4rem;color:var(--text-primary);padding:0.4rem 0.6rem;font-size:0.85rem;resize:vertical;"
+              placeholder="Nhập dữ liệu cách nhau bằng dấu phẩy"></textarea>
+            <button class="btn-primary" id="descCalcBtn" style="align-self:flex-start;">📐 Tính toán</button>
+          </div>
+
+          <canvas id="descChart" width="500" height="260"></canvas>
+
+          <div style="font-size:0.72rem;color:var(--text-muted);text-align:center;">
+            Biểu đồ phân tán điểm dữ liệu · Đường đỏ = Trung bình · Đường xanh = Trung vị
+          </div>
+        </div>
+
+        <div class="right-panel">
+          <div>
+            <span class="grade-badge">📚 Lớp 8–12</span>
+            <h3 style="font-size:1rem;margin-top:0.6rem;border-bottom:1px solid var(--border-color);padding-bottom:0.5rem;">Kết quả</h3>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="label">Trung bình (x̄)</div>
+              <div class="value" id="dsMean" style="color:#60a5fa;">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Trung vị (Me)</div>
+              <div class="value" id="dsMedian" style="color:#34d399;">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Phương sai (s²)</div>
+              <div class="value" id="dsVariance" style="font-size:1rem;">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Độ lệch chuẩn (s)</div>
+              <div class="value" id="dsStdDev" style="color:#f59e0b;">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Min</div>
+              <div class="value" id="dsMin">–</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Max</div>
+              <div class="value" id="dsMax">–</div>
+            </div>
+          </div>
+
+          <div class="formula-box">
+            <div class="fl">Công thức</div>
+            x̄ = Σxᵢ / n
+            <br>s² = Σ(xᵢ − x̄)² / n
+            <br>s = √s²
+          </div>
+
+          <div class="info-box" id="descInsight">
+            Chọn bộ dữ liệu và nhấn <strong>Tính toán</strong> để xem các chỉ số thống kê.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+  <script src="prob_sim.js"></script>
+</body>
+</html>

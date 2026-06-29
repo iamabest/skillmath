@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trực quan hằng đẳng thức (a+b)² - Toán 8</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .math-canvas {
+      background: #111827;
+      border: 2px dashed rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .legend-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .legend-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+    
+    .color-a2 { background-color: rgba(16, 185, 129, 0.85); }
+    .color-b2 { background-color: rgba(139, 92, 246, 0.85); }
+    .color-ab { background-color: rgba(245, 158, 11, 0.85); }
+    
+    .calc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .calc-table th, .calc-table td {
+      padding: 0.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .calc-table th {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+
+  <main>
+   
+
+    <div class="simulation-container">
+      <!-- Bảng vẽ mô phỏng -->
+      <div class="canvas-panel">
+        <canvas id="mathCanvas" width="420" height="420" class="math-canvas"></canvas>
+        
+        <div class="legend-container">
+          <div class="legend-item">
+            <span class="legend-color color-a2"></span>
+            <span>Diện tích \(a^2\)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color color-b2"></span>
+            <span>Diện tích \(b^2\)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color color-ab"></span>
+            <span>Diện tích \(ab\) (có 2 mảnh)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bảng điều khiển -->
+      <div class="control-panel">
+        <h3 style="font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Thông số & Điều khiển</h3>
+        
+        <div class="control-group">
+          <div class="control-label">
+            <span>Độ dài cạnh a</span>
+            <span id="valA" style="font-weight: bold; color: var(--color-success);">100</span>
+          </div>
+          <input type="range" id="sliderA" min="30" max="250" value="150">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Độ dài cạnh b</span>
+            <span id="valB" style="font-weight: bold; color: var(--color-accent);">80</span>
+          </div>
+          <input type="range" id="sliderB" min="30" max="250" value="100">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Công thức đại số</label>
+          <div class="math-display">
+            \((a + b)^2 = a^2 + 2ab + b^2\)
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Tính toán giá trị thực</label>
+          <table class="calc-table">
+            <thead>
+              <tr>
+                <th>Thành phần</th>
+                <th>Phép tính</th>
+                <th>Diện tích</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color: var(--color-success); font-weight: 500;">Mảnh a²</td>
+                <td><span id="calcA2Expr">150²</span></td>
+                <td><span id="calcA2Val">22500</span> px²</td>
+              </tr>
+              <tr>
+                <td style="color: var(--color-accent); font-weight: 500;">Mảnh b²</td>
+                <td><span id="calcB2Expr">100²</span></td>
+                <td><span id="calcB2Val">10000</span> px²</td>
+              </tr>
+              <tr>
+                <td style="color: var(--color-warning); font-weight: 500;">2 Mảnh ab</td>
+                <td><span id="calc2AbExpr">2 × 150 × 100</span></td>
+                <td><span id="calc2AbVal">30000</span> px²</td>
+              </tr>
+              <tr style="border-top: 2px solid var(--border-color); font-weight: bold;">
+                <td>Tổng mảnh nhỏ</td>
+                <td><span id="calcSumExpr">a² + 2ab + b²</span></td>
+                <td><span id="calcSumVal">62500</span> px²</td>
+              </tr>
+              <tr style="font-weight: bold; color: #60a5fa;">
+                <td>Hình lớn (a+b)²</td>
+                <td><span id="calcBigExpr">(150 + 100)²</span></td>
+                <td><span id="calcBigVal">62500</span> px²</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+  <script src="sim.js"></script>
+</body>
+</html>

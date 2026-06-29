@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đối xứng hình phẳng - Toán 6</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .math-canvas {
+      background: #111827;
+      border: 2px dashed rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .btn-action {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    
+    .btn-action:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    
+    .btn-action:disabled {
+      background: var(--text-muted);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+    
+    .select-style {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      outline: none;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+    
+    .select-style option {
+      background: #0f172a;
+      color: var(--text-primary);
+    }
+    
+    .info-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    
+    .tab-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.25rem;
+      border-radius: 0.5rem;
+    }
+    
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: var(--transition-fast);
+    }
+    
+    .tab-btn.active {
+      background: var(--color-primary);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+
+    <div style="margin-bottom: 1.5rem;">
+      <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem;">Đối xứng của các Hình phẳng trong thực tế</h2>
+      <p style="color: var(--text-secondary); font-size: 0.95rem;">
+        Tìm hiểu trục đối xứng (phép gấp đôi hình) và tâm đối xứng (phép xoay hình 180 độ) của các hình hình học cơ bản trong SGK mới.
+      </p>
+    </div>
+
+    <div class="simulation-container">
+      <!-- Bảng vẽ mô phỏng -->
+      <div class="canvas-panel">
+        <canvas id="symmetryCanvas" width="450" height="400" class="math-canvas"></canvas>
+      </div>
+
+      <!-- Bảng điều khiển -->
+      <div class="control-panel">
+        <h3 style="font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Cấu hình hình học</h3>
+        
+        <div class="control-group">
+          <label class="control-label">Chọn hình phẳng</label>
+          <select id="shapeSelect" class="select-style">
+            <option value="square">Hình vuông</option>
+            <option value="rectangle">Hình chữ nhật</option>
+            <option value="equiTriangle">Tam giác đều</option>
+            <option value="rhombus">Hình thoi</option>
+            <option value="parallelogram">Hình bình hành</option>
+            <option value="hexagon">Lục giác đều</option>
+          </select>
+        </div>
+
+        <div class="tab-group">
+          <button id="tabAxial" class="tab-btn active">Đối xứng trục (Gấp hình)</button>
+          <button id="tabRotational" class="tab-btn">Đối xứng tâm (Xoay 180°)</button>
+        </div>
+
+        <!-- Nội dung điều khiển cho Đối xứng Trục -->
+        <div id="axialControls" class="control-group">
+          <div class="control-label">
+            <span>Chọn trục đối xứng</span>
+            <span id="axialCount" style="font-weight: bold; color: var(--color-success);">0 trục</span>
+          </div>
+          <select id="axisSelect" class="select-style" style="margin-bottom: 0.75rem;"></select>
+          
+          <button id="btnFold" class="btn-action" style="width: 100%;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm4 0v16M4 12h16"/></svg>
+            Gấp hình kiểm tra
+          </button>
+        </div>
+
+        <!-- Nội dung điều khiển cho Đối xứng Tâm -->
+        <div id="rotationalControls" class="control-group" style="display: none;">
+          <div class="control-label">
+            <span>Tâm đối xứng</span>
+            <span id="hasCenter" style="font-weight: bold; color: var(--color-success);">Có</span>
+          </div>
+          
+          <button id="btnRotate" class="btn-action" style="width: 100%;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17"/></svg>
+            Xoay hình 180°
+          </button>
+        </div>
+
+        <!-- Bảng giải thích chi tiết -->
+        <div class="control-group">
+          <label class="control-label">Đặc điểm hình học</label>
+          <div id="shapeDescription" class="info-box">
+            <!-- Sẽ tự cập nhật qua JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+  <script src="sim.js"></script>
+</body>
+</html>
