@@ -1,11 +1,11 @@
-import { SimulationCard } from './SimulationCard.jsx';
+import { SimulationCard } from "./SimulationCard.jsx";
 
 const accentMap = {
-  primary: 'var(--color-primary)',
-  success: 'var(--color-success)',
-  warning: 'var(--color-warning)',
-  danger: 'var(--color-danger)',
-  accent: 'var(--color-accent)',
+  primary: "var(--color-primary)",
+  success: "var(--color-success)",
+  warning: "var(--color-warning)",
+  danger: "var(--color-danger)",
+  accent: "var(--color-accent)",
 };
 
 export function GradeSection({ gradeGroup }) {
@@ -20,8 +20,11 @@ export function GradeSection({ gradeGroup }) {
         <h2 className="grade-title">{gradeGroup.title}</h2>
       </div>
       <div className="sim-grid">
-        {gradeGroup.simulations.map((simulation) => (
-          <SimulationCard key={simulation.href} simulation={simulation} />
+        {gradeGroup.simulations.map((simulation, index) => (
+          <SimulationCard
+            key={`${simulation.url}-${index}`}
+            simulation={simulation}
+          />
         ))}
       </div>
     </section>

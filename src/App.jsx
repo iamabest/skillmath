@@ -1,43 +1,96 @@
-import { Routes, Route } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import { simulationsByGrade } from './data/simulations.js';
-import { AppFooter } from './components/AppFooter.jsx';
-import { GradeSection } from './components/GradeSection.jsx';
-import { Hero } from './components/Hero.jsx';
-import { SimulationPage } from './components/SimulationPage.jsx';
-import { SiteHeader } from './components/SiteHeader.jsx';
-import PageLayout from './components/PageLayout.jsx';
-import LegacyRedirect from './components/LegacyRedirect.jsx';
+import { Routes, Route } from "react-router-dom";
+// import { useParams } from 'react-router-dom';
+import { simulationsByGrade } from "./data/simulations.js";
 
-function HomePage() {
-  return (
-    <PageLayout>
-      <Hero />
-      <div className="grade-container">
-        {simulationsByGrade.map((gradeGroup) => (
-          <GradeSection key={gradeGroup.id} gradeGroup={gradeGroup} />
-        ))}
-      </div>
-    </PageLayout>
-  );
-}
+import { GradeSection } from "./components/GradeSection.jsx";
+import { Hero } from "./components/Hero.jsx";
+// import { SimulationPage } from './components/SimulationPage.jsx';
 
-function SimulationRoute() {
-  const { slug } = useParams();
-  return (
-    <PageLayout>
-      <SimulationPage slug={slug} />
-    </PageLayout>
-  );
-}
+import PageLayout from "./components/PageLayout.jsx";
+// import LegacyRedirect from './components/LegacyRedirect.jsx';
+import InscribedAngleSimulation from "../src/page/math9/InscribedAngleSimulation.jsx";
+import { SiteHeader } from "./components/SiteHeader.jsx";
+import { AppFooter } from "./components/AppFooter.jsx";
+import HomePage from "./page/HomePage";
+import ParabolaSimulation from "./page/math9/ParabolaSimulation.jsx";
+import BinomialIdentitySimulation from "./page/math8/BinomialIdentitySimulation.jsx";
+import LinearGraphSimulation from "./page/math8/LinearGraphSimulation.jsx";
+import SpatialNetSimulation from "./page/math7/spatial-nets/SpatialNetSimulation.jsx";
+import TriangleConcurrencySimulation from "./page/math7/TriangleConcurrencySimulation.jsx";
+import NumberLineSimulation from "./page/math6/NumberLineSimulation.jsx";
+import SymmetrySimulation from "./page/math6/SymmetrySimulation.jsx";
+
+// function HomePage() {
+//   return (
+//     <>
+//       <SiteHeader />
+//       <main>
+//         <Hero />
+//         <div className="grade-container">
+//           {simulationsByGrade.map((gradeGroup) => (
+//             <GradeSection key={gradeGroup.id} gradeGroup={gradeGroup} />
+//           ))}
+//         </div>
+//       </main>
+//       <AppFooter />
+//     </>
+//   );
+// }
+
+// function SimulationRoute() {
+//   const { slug } = useParams();
+//   return (
+//     <PageLayout>
+//       <SimulationPage slug={slug} />
+//     </PageLayout>
+//   );
+// }
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/simulation/:slug" element={<SimulationRoute />} />
+      <Route
+        path="/simulations/lop9-goc-noi-tiep"
+        element={<InscribedAngleSimulation />}
+      />
+      <Route
+        path="/simulations/lop9-ban-bong-parabol"
+        element={<ParabolaSimulation />}
+      />
+      {/* Math8 */}
+      <Route
+        path="/simulations/lop8-hang-dang-thuc"
+        element={<BinomialIdentitySimulation />}
+      />
+      <Route
+        path="/simulations/lop8-do-thi-bac-nhat"
+        element={<LinearGraphSimulation />}
+      />
+      {/* Math7 */}
+      <Route
+        path="/simulations/lop7-trai-phang"
+        element={<SpatialNetSimulation />}
+      />
+      <Route
+        path="/simulations/lop7-duong-dong-quy"
+        element={<TriangleConcurrencySimulation />}
+      />
+
+      {/*Mat6*/}
+       <Route
+        path="/simulations/lop6-truc-so-nguyen"
+        element={<NumberLineSimulation />}
+      />
+       <Route
+        path="/simulations/lop6-doi-xung-hinh-phang"
+        element={<SymmetrySimulation/>}
+      />
+
+
+      {/* <Route path="/simulation/:slug" element={<SimulationRoute />} /> */}
       {/* Catch-all: handle legacy ?simulation=X query strings */}
-      <Route path="*" element={<LegacyRedirect />} />
+      {/* <Route path="*" element={<LegacyRedirect />} /> */}
     </Routes>
   );
 }

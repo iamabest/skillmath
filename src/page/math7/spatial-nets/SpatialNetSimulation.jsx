@@ -4,8 +4,9 @@ import { useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { buildNetShape, netShapeOptions } from './netShapes.js';
 import { Link } from 'react-router-dom';
+import PageLayout from '../../../components/PageLayout.jsx';
 
-export function SpatialNetSimulation() {
+export default function SpatialNetSimulation() {
   const [shapeId, setShapeId] = useState('cube');
   const [progress, setProgress] = useState(0);
   const [autoPlay, setAutoPlay] = useState(false);
@@ -13,19 +14,8 @@ export function SpatialNetSimulation() {
   const shape = useMemo(() => buildNetShape(shapeOption), [shapeOption]);
 
   return (
-    <div className="simulation-page">
-      <div className="simulation-heading">
-        <div>
-          <Link className="btn-back" to="/">
-            ← Quay lại trang chủ
-          </Link>
-          <h1>Trải phẳng hình không gian 3D</h1>
-          <p>
-            Chọn hình khối, kéo thanh tiến trình để quan sát các mặt mở ra thành lưới
-            phẳng. Mô phỏng dùng React Three Fiber nên dễ thêm khối mới về sau.
-          </p>
-        </div>
-      </div>
+    <PageLayout>
+   
 
       <div className="simulation-container spatial-workspace">
         <section className="canvas-panel spatial-canvas-panel">
@@ -133,7 +123,7 @@ export function SpatialNetSimulation() {
           </div>
         </aside>
       </div>
-    </div>
+    </PageLayout>
   );
 }
 

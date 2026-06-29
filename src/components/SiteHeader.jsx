@@ -5,7 +5,7 @@ export function SiteHeader() {
     <header>
       <Link className="logo-container brand-link" to="/" aria-label="SkillMath9 – Trang chủ">
         <div className="logo-icon" aria-hidden="true">∑</div>
-        <div className="logo-text">SkillMath9</div>
+        <div className="logo-text">Math</div>
         <span className="badge">Kết nối tri thức</span>
       </Link>
       <nav aria-label="Điều hướng chính">

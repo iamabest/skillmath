@@ -1,26 +1,22 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export function SimulationCard({ simulation }) {
-  const navigate = useNavigate();
-  const to = `/simulation/${simulation.slug}`;
+  
+  // const to = `/simulation/${simulation.slug}`;
 
-  const openSimulation = () => navigate(to);
+  // const openSimulation = () => navigate(to);
 
-  const openByKeyboard = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      openSimulation();
-    }
-  };
+  // const openByKeyboard = (event) => {
+  //   if (event.key === 'Enter' || event.key === ' ') {
+  //     event.preventDefault();
+  //     openSimulation();
+  //   }
+  // };
 
   return (
     <article
       className="sim-card"
-      role="link"
-      tabIndex="0"
-      aria-label={`Mở mô phỏng: ${simulation.title}`}
-      onClick={openSimulation}
-      onKeyDown={openByKeyboard}
+    
     >
       <div>
         <div className="sim-tags">
@@ -38,13 +34,17 @@ export function SimulationCard({ simulation }) {
       </div>
       <div className="sim-footer">
         <span className="sim-status status-ready">{simulation.status}</span>
-        <a
+        {/* <a
           href={to}
           className="btn-open"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(to); }}
         >
           Trải nghiệm →
-        </a>
+        </a> */}
+        <Link 
+        to={simulation.url}
+        className='btn-open'> Trải nghiệm →
+        </Link>
       </div>
     </article>
   );

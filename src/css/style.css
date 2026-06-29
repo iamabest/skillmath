@@ -126,8 +126,8 @@ h1, h2, h3, h4 {
 
 .hero-section {
   text-align: center;
-  margin-bottom: 3rem;
-  padding: 3rem 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem 1rem;
   position: relative;
 }
 
@@ -598,3 +598,4 @@ footer {
     min-height: 480px;
   }
 }
+

@@ -47,25 +47,25 @@ function SimulationLoading() {
   );
 }
 
-function LegacySimulationFrame({ simulation }) {
-  return (
-    <main className="simulation-page">
-      <div className="simulation-heading">
-        <div>
-          <Link className="btn-back" to="/">← Quay lại trang chủ</Link>
-          <h1>{simulation.title}</h1>
-          <p>{simulation.description}</p>
-        </div>
-      </div>
-      <section className="legacy-frame-shell">
-        <iframe
-          title={simulation.title}
-          src={simulation.legacyPath}
-          className="legacy-frame"
-          loading="lazy"
-          sandbox="allow-scripts allow-same-origin"
-        />
-      </section>
-    </main>
-  );
-}
+// function LegacySimulationFrame({ simulation }) {
+//   return (
+//     <main className="simulation-page">
+//       <div className="simulation-heading">
+//         <div>
+//           <Link className="btn-back" to="/">← Quay lại trang chủ</Link>
+//           <h1>{simulation.title}</h1>
+//           <p>{simulation.description}</p>
+//         </div>
+//       </div>
+//       <section className="legacy-frame-shell">
+//         <iframe
+//           title={simulation.title}
+//           src={simulation.legacyPath}
+//           className="legacy-frame"
+//           loading="lazy"
+//           sandbox="allow-scripts allow-same-origin"
+//         />
+//       </section>
+//     </main>
+//   );
+// }
