@@ -20,31 +20,6 @@ import TriangleConcurrencySimulation from "./page/math7/TriangleConcurrencySimul
 import NumberLineSimulation from "./page/math6/NumberLineSimulation.jsx";
 import SymmetrySimulation from "./page/math6/SymmetrySimulation.jsx";
 
-// function HomePage() {
-//   return (
-//     <>
-//       <SiteHeader />
-//       <main>
-//         <Hero />
-//         <div className="grade-container">
-//           {simulationsByGrade.map((gradeGroup) => (
-//             <GradeSection key={gradeGroup.id} gradeGroup={gradeGroup} />
-//           ))}
-//         </div>
-//       </main>
-//       <AppFooter />
-//     </>
-//   );
-// }
-
-// function SimulationRoute() {
-//   const { slug } = useParams();
-//   return (
-//     <PageLayout>
-//       <SimulationPage slug={slug} />
-//     </PageLayout>
-//   );
-// }
 
 export default function App() {
   return (
@@ -87,10 +62,6 @@ export default function App() {
         element={<SymmetrySimulation/>}
       />
 
-
-      {/* <Route path="/simulation/:slug" element={<SimulationRoute />} /> */}
-      {/* Catch-all: handle legacy ?simulation=X query strings */}
-      {/* <Route path="*" element={<LegacyRedirect />} /> */}
     </Routes>
   );
 }
