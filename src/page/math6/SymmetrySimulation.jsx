@@ -19,9 +19,11 @@ const SHAPES = {
       { name: "Đường chéo phụ", angle: -Math.PI / 4 },
     ],
     hasCenter: true,
-    draw: (ctx, size = 150) => {
+    draw: (size = 150) => {
       const half = size / 2;
-      ctx.rect(-half, -half, size, size);
+      const p = new Path2D();
+      p.rect(-half, -half, size, size);
+      return p;
     },
   },
   rectangle: {
@@ -33,10 +35,12 @@ const SHAPES = {
       { name: "Đường trung trực dọc", angle: Math.PI / 2 },
     ],
     hasCenter: true,
-    draw: (ctx, size = 150) => {
+    draw: (size = 150) => {
       const width = size * 1.2;
       const height = size * 0.8;
-      ctx.rect(-width / 2, -height / 2, width, height);
+      const p = new Path2D();
+      p.rect(-width / 2, -height / 2, width, height);
+      return p;
     },
   },
   equiTriangle: {
@@ -49,13 +53,16 @@ const SHAPES = {
       { name: "Đường cao xiên phải", angle: Math.PI / 2 - Math.PI / 3 },
     ],
     hasCenter: false,
-    draw: (ctx, size = 160) => {
+    draw: (size = 160) => {
       const height = (size * Math.sqrt(3)) / 2;
-      const radius = height / 3;
-      ctx.moveTo(0, -radius * 2);
-      ctx.lineTo(size / 2, radius);
-      ctx.lineTo(-size / 2, radius);
-      ctx.closePath();
+      const topY = (-2 * height) / 3; // centroid at origin
+      const baseY = height / 3;
+      const p = new Path2D();
+      p.moveTo(0, topY);
+      p.lineTo(size / 2, baseY);
+      p.lineTo(-size / 2, baseY);
+      p.closePath();
+      return p;
     },
   },
   rhombus: {
@@ -67,14 +74,16 @@ const SHAPES = {
       { name: "Đường chéo dọc", angle: Math.PI / 2 },
     ],
     hasCenter: true,
-    draw: (ctx, size = 150) => {
+    draw: (size = 150) => {
       const width = size * 1.3;
       const height = size * 0.8;
-      ctx.moveTo(0, -height / 2);
-      ctx.lineTo(width / 2, 0);
-      ctx.lineTo(0, height / 2);
-      ctx.lineTo(-width / 2, 0);
-      ctx.closePath();
+      const p = new Path2D();
+      p.moveTo(0, -height / 2);
+      p.lineTo(width / 2, 0);
+      p.lineTo(0, height / 2);
+      p.lineTo(-width / 2, 0);
+      p.closePath();
+      return p;
     },
   },
   parallelogram: {
@@ -83,15 +92,24 @@ const SHAPES = {
       "Hình bình hành **KHÔNG có trục đối xứng** nào (khi gấp đôi hình theo bất kỳ đường nào đều không khớp) nhưng **có tâm đối xứng** (giao điểm hai đường chéo).",
     axes: [],
     hasCenter: true,
-    draw: (ctx, size = 150) => {
+    draw: (size = 150) => {
       const width = size * 1.2;
       const height = size * 0.8;
       const skew = 35;
-      ctx.moveTo(-width / 2 + skew, -height / 2);
-      ctx.lineTo(width / 2 + skew, -height / 2);
-      ctx.lineTo(width / 2 - skew, height / 2);
-      ctx.lineTo(-width / 2 - skew, height / 2);
-      ctx.closePath();
+      let verts = [
+        [-width / 2 + skew, -height / 2],
+        [width / 2 + skew, -height / 2],
+        [width / 2 - skew, height / 2],
+        [-width / 2 - skew, height / 2],
+      ];
+      // center the polygon at origin
+      const cx = verts.reduce((s, v) => s + v[0], 0) / verts.length;
+      const cy = verts.reduce((s, v) => s + v[1], 0) / verts.length;
+      verts = verts.map(([x, y]) => [x - cx, y - cy]);
+      const p = new Path2D();
+      verts.forEach(([x, y], i) => (i === 0 ? p.moveTo(x, y) : p.lineTo(x, y)));
+      p.closePath();
+      return p;
     },
   },
   hexagon: {
@@ -107,15 +125,17 @@ const SHAPES = {
       { name: "Trục chéo 150° qua đỉnh", angle: (5 * Math.PI) / 6 },
     ],
     hasCenter: true,
-    draw: (ctx, size = 95) => {
+    draw: (size = 95) => {
+      const p = new Path2D();
       for (let i = 0; i < 6; i += 1) {
         const angle = (i * Math.PI) / 3;
         const x = size * Math.cos(angle);
         const y = size * Math.sin(angle);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        if (i === 0) p.moveTo(x, y);
+        else p.lineTo(x, y);
       }
-      ctx.closePath();
+      p.closePath();
+      return p;
     },
   },
 };
@@ -126,10 +146,11 @@ function drawShape(ctx, shape, style = {}) {
   ctx.fillStyle = style.fillStyle || "rgba(59, 130, 246, 0.2)";
   ctx.lineWidth = style.lineWidth || 3;
   ctx.setLineDash(style.lineDash || []);
-  ctx.beginPath();
-  shape.draw(ctx);
-  ctx.fill();
-  ctx.stroke();
+  const path = typeof shape.draw === "function" ? shape.draw() : null;
+  if (path) {
+    ctx.fill(path);
+    ctx.stroke(path);
+  }
   ctx.restore();
 }
 
@@ -268,15 +289,15 @@ export default function SymmetrySimulation() {
       ctx.beginPath();
       ctx.fillStyle = "#ef4444"; // Màu đỏ nổi bật
       // Vẽ tại điểm cao nhất của hình (giả định hình có kích thước khoảng 75-80 đơn vị từ tâm)
-      if (shapeSelect.value === "square") {
+      if (shapeKey === "square") {
         ctx.arc(-75, -75, 6, 0, Math.PI * 2);
-      } else if (shapeSelect.value === "rectangle") {
+      } else if (shapeKey === "rectangle") {
         ctx.arc(-90, -60, 6, 0, Math.PI * 2);
-      } else if (shapeSelect.value === "equiTriangle") {
+      } else if (shapeKey === "equiTriangle") {
         ctx.arc(0, -95, 6, 0, Math.PI * 2);
-      } else if (shapeSelect.value === "hexagon") {
+      } else if (shapeKey === "hexagon") {
         ctx.arc(-95, 0, 6, 0, Math.PI * 2);
-      } else if (shapeSelect.value === "rhombus") {
+      } else if (shapeKey === "rhombus") {
         ctx.arc(-95, 0, 6, 0, Math.PI * 2);
       } else {
         ctx.arc(-55, -60, 6, 0, Math.PI * 2);
@@ -390,7 +411,7 @@ export default function SymmetrySimulation() {
               className="select-control"
               value={shapeKey}
               disabled={isAnimating}
-              onChange={(event) => setShapeKey(event.target.value)}
+              onChange={(e) => setShapeKey(e.target.value)}
             >
               {Object.keys(SHAPES).map((key) => (
                 <option key={key} value={key}>
@@ -436,7 +457,7 @@ export default function SymmetrySimulation() {
                   className="select-control"
                   value={axisIndex}
                   disabled={isAnimating}
-                  onChange={(event) => setAxisIndex(Number(event.target.value))}
+                  onChange={(e) => setAxisIndex(Number(e.target.value))}
                 >
                   {shape.axes.map((axis, index) => (
                     <option key={axis.name} value={index}>

@@ -2,7 +2,7 @@
   "name": "skillmath9",
   "private": true,
   "version": "1.2.0",
-  "description": "Hệ thống mô phỏng Toán học THCS tương tác - SGK Kết nối tri thức",
+  "description": "Hệ thống mô phỏng Toán học THCS tương tác",
   "author": "Minh Tân",
   "license": "MIT",
   "type": "module",

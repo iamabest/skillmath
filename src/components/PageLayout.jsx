@@ -5,7 +5,6 @@ import { allSimulations } from "../data/simulations.js";
 export default function PageLayout({ children }) {
   const { pathname } = useLocation();
   const simulation = allSimulations.find((item) => item.url === pathname);
-  console.log(simulation);
   return (
     <>
       <SiteHeader />

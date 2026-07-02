@@ -37,9 +37,9 @@ export const simulationsByGrade = [
         slug: "lop7-trai-phang",
         title: "Trải phẳng hình không gian 3D",
         component: "spatial-nets",
-        tags: ["3D không gian", "React 3D"],
+        tags: ["3D không gian", "Hoạt động"],
         tagType: "geometry",
-        status: "7 hình khối",
+        status: "Sẵn sàng",
         url: "/simulations/lop7-trai-phang",
         description:
           "Chọn hình, kéo thanh trượt và quan sát quá trình khai triển mô hình 3D.",
@@ -132,9 +132,9 @@ export const simulationsByGrade = [
       {
         slug: "xac-suat-thong-ke",
         title: "Tung đồng xu và gieo xúc xắc",
-        tags: ["Xác suất", "Hoạt động"],
+        tags: ["Xác suất", "Nâng cấp"],
         tagType: "algebra",
-        status: "Lớp 6–9",
+        status: "Sẵn sàng",
         url: "/simulations/xac-suat-thong-ke",
         description:
           "Mô phỏng xác suất thực nghiệm, theo dõi tần suất và so sánh với xác suất lý thuyết qua biểu đồ.",
@@ -142,9 +142,9 @@ export const simulationsByGrade = [
       {
         slug: "xac-suat-thong-ke-freq",
         title: "Biểu đồ tần số và thống kê mô tả",
-        tags: ["Thống kê", "Hoạt động"],
+        tags: ["Thống kê", "Nâng cấp"],
         tagType: "algebra",
-        status: "Lớp 8–12",
+        status: "Đang phát triển",
         url: "/simulations/xac-suat-thong-ke#freq",
         description:
           "Nhập hoặc tạo dữ liệu ngẫu nhiên, vẽ biểu đồ tần số, tính trung bình, trung vị và độ lệch chuẩn.",

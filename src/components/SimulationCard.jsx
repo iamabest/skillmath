@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export function SimulationCard({ simulation }) {
-  
   // const to = `/simulation/${simulation.slug}`;
 
   // const openSimulation = () => navigate(to);
@@ -14,16 +13,13 @@ export function SimulationCard({ simulation }) {
   // };
 
   return (
-    <article
-      className="sim-card"
-    
-    >
+    <article className="sim-card">
       <div>
         <div className="sim-tags">
           {simulation.tags.map((tag, index) => (
             <span
               key={tag}
-              className={`tag tag-${index === 0 ? simulation.tagType : 'active'}`}
+              className={`tag tag-${index === 0 ? simulation.tagType : "active"}`}
             >
               {tag}
             </span>
@@ -33,18 +29,17 @@ export function SimulationCard({ simulation }) {
         <p className="sim-description">{simulation.description}</p>
       </div>
       <div className="sim-footer">
-        <span className="sim-status status-ready">{simulation.status}</span>
-        {/* <a
-          href={to}
-          className="btn-open"
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(to); }}
-        >
-          Trải nghiệm →
-        </a> */}
-        <Link 
-        to={simulation.url}
-        className='btn-open'> Trải nghiệm →
-        </Link>
+        {simulation.status === "Sẵn sàng" ? (
+          <span className="sim-status status-ready ">Sẵn sàng</span>
+        ) : (
+          <span className="sim-status status-dev">Đang phát triển</span>
+        )}
+
+        {simulation.status == "Sẵn sàng" && (
+          <Link to={simulation.url} className="btn-open">
+            Trải nghiệm →
+          </Link>
+        )}
       </div>
     </article>
   );

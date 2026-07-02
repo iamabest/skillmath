@@ -19,6 +19,7 @@ import SpatialNetSimulation from "./page/math7/spatial-nets/SpatialNetSimulation
 import TriangleConcurrencySimulation from "./page/math7/TriangleConcurrencySimulation.jsx";
 import NumberLineSimulation from "./page/math6/NumberLineSimulation.jsx";
 import SymmetrySimulation from "./page/math6/SymmetrySimulation.jsx";
+import ProbSim from "./page/xstk/ProbSim.jsx";
 
 
 export default function App() {
@@ -53,15 +54,19 @@ export default function App() {
       />
 
       {/*Mat6*/}
-       <Route
+      <Route
         path="/simulations/lop6-truc-so-nguyen"
         element={<NumberLineSimulation />}
       />
-       <Route
+      <Route
         path="/simulations/lop6-doi-xung-hinh-phang"
-        element={<SymmetrySimulation/>}
+        element={<SymmetrySimulation />}
       />
-
+      {/*xstk*/}
+      <Route
+        path="/simulations/xac-suat-thong-ke"
+        element={<ProbSim/>}
+      />
     </Routes>
   );
 }
