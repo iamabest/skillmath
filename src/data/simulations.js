@@ -25,6 +25,26 @@ export const simulationsByGrade = [
         description:
           "Cắt, gấp và kiểm tra trục đối xứng, tâm đối xứng của các hình phẳng thường gặp qua thao tác tương tác.",
       },
+      {
+        slug: "lop6-sang-eratosthenes",
+        title: "Tim số nguyên tố",
+        tags: ["Số học", "3D"],
+        tagType: "algebra",
+        status: "Sẵn sàng",
+        url: "/simulations/lop6-sang-eratosthenes",
+        description:
+          "Trực quan hóa quá trình tìm số nguyên tố bằng cách loại bỏ các hợp số trong không gian 3D.",
+      },
+      {
+        slug: "lop6-phan-so-lat-cat",
+        title: "Phân số và Lát cắt 3D",
+        tags: ["Số học", "3D"],
+        tagType: "algebra",
+        status: "Sẵn sàng",
+        url: "/simulations/lop6-phan-so-lat-cat",
+        description:
+          "Cắt hình trụ và hình tròn theo tỷ lệ phần trăm để hiểu rõ mối quan hệ giữa phân số, số thập phân và phần trăm.",
+      },
     ],
   },
   {
@@ -44,16 +64,7 @@ export const simulationsByGrade = [
         description:
           "Chọn hình, kéo thanh trượt và quan sát quá trình khai triển mô hình 3D.",
       },
-      // {
-      //   slug: 'lop7-lang-tru-3d',
-      //   title: 'Lăng trụ và hình khối 3D',
-      //   component: 'spatial-nets',
-      //   tags: ['3D không gian', 'React 3D'],
-      //   tagType: 'geometry',
-      //   status: 'Nâng cấp',
-      //   description:
-      //     'Bộ mô phỏng hình trải phẳng hỗ trợ lăng trụ tam giác, ngũ giác, lục giác, hình hộp và hình chóp.',
-      // },
+ 
       {
         slug: "lop7-duong-dong-quy",
         title: "Ba đường đồng quy trong tam giác",
@@ -72,6 +83,15 @@ export const simulationsByGrade = [
     accent: "accent",
     title: "Toán 8 – Hằng đẳng thức, hàm số và hình đồng dạng",
     simulations: [
+      {
+        slug: "lop8-phong-thi-nghiem-3d",
+        title: "Phòng thí nghiệm 3D Lớp 8",
+        tags: ["3D", "Không gian"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop8-phong-thi-nghiem-3d",
+        description: "Mô phỏng 3D lăng trụ đứng và hình chóp đều, cho phép tương tác tuỳ chỉnh thông số.",
+      },
       {
         slug: "lop8-hang-dang-thuc",
         title: "Trực quan hằng đẳng thức (a + b)²",
@@ -101,6 +121,15 @@ export const simulationsByGrade = [
     title: "Toán 9 – Đường tròn và mô hình thực tế",
     simulations: [
       {
+        slug: "lop9-khoi-tron-xoay",
+        title: "Khối tròn xoay 3D",
+        tags: ["3D", "Không gian"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop9-khoi-tron-xoay",
+        description: "Khám phá hình trụ, hình nón và hình cầu 3D với góc quay thời gian thực.",
+      },
+      {
         slug: "lop9-ban-bong-parabol",
         title: "Bắn bóng Parabol y = ax²",
         tags: ["Đại số", "Hoạt động"],
@@ -116,10 +145,20 @@ export const simulationsByGrade = [
         tags: ["Đường tròn", "Hoạt động"],
         tagType: "geometry",
         status: "Sẵn sàng",
+        slug: "lop9-goc-noi-tiep",
         url: "/simulations/lop9-goc-noi-tiep",
         component: 'InscribedAngleSimulation',
         description:
           "Di chuyển đỉnh góc nội tiếp trên đường tròn, so sánh số đo góc nội tiếp với góc ở tâm.",
+      },
+      {
+        slug: "lop9-thiet-dien-hinh-khoi",
+        title: "Thiết diện của hình khối 3D",
+        tags: ["3D", "Không gian"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop9-thiet-dien-hinh-khoi",
+        description: "Dùng mặt phẳng cắt (clipping plane) cắt qua các khối 3D để khám phá thiết diện được tạo thành.",
       },
     ],
   },

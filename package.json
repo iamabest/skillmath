@@ -20,6 +20,8 @@
     "@react-spring/three": "^10.1.2",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
+    "@react-three/xr": "^6.6.30",
+    "@tailwindcss/vite": "^4.3.2",
     "framer-motion": "^12.42.0",
     "katex": "^0.17.0",
     "leva": "^0.10.1",
@@ -27,9 +29,10 @@
     "postcss": "^8.5.16",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-joyride": "^3.1.0",
     "react-katex": "^3.1.0",
     "react-router-dom": "^7.18.0",
-    "tailwindcss": "^4.3.1",
+    "tailwindcss": "^4.3.2",
     "three": "^0.185.0",
     "zustand": "^5.0.14"
   }

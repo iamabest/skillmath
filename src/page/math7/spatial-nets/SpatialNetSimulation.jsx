@@ -1,22 +1,73 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useMemo, useRef, useState } from 'react';
+import { createXRStore, XR } from '@react-three/xr';
+import { useMemo, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { buildNetShape, netShapeOptions } from './netShapes.js';
 import { Link } from 'react-router-dom';
 import PageLayout from '../../../components/PageLayout.jsx';
+import { Joyride, STATUS } from 'react-joyride';
+
+const store = createXRStore();
 
 export default function SpatialNetSimulation() {
   const [shapeId, setShapeId] = useState('cube');
   const [progress, setProgress] = useState(0);
   const [autoPlay, setAutoPlay] = useState(false);
+  const [runTour, setRunTour] = useState(false);
+
+  useEffect(() => {
+    // Only run tour once per session
+    if (!sessionStorage.getItem('tour_spatial_nets')) {
+      setRunTour(true);
+      sessionStorage.setItem('tour_spatial_nets', 'true');
+    }
+  }, []);
+
+  const tourSteps = [
+    {
+      target: '.spatial-canvas-panel',
+      content: 'Đây là không gian 3D. Bạn có thể dùng chuột để xoay và thu phóng hình khối.',
+      disableBeacon: true,
+    },
+    {
+      target: '.select-control',
+      content: 'Chọn một hình khối khác ở đây.',
+    },
+    {
+      target: 'input[type="range"]',
+      content: 'Kéo thanh trượt này để tự tay mở phẳng hình khối.',
+    },
+    {
+      target: '.button-row button:first-child',
+      content: 'Hoặc bấm vào đây để hệ thống tự động mở khối cho bạn xem nhé!',
+    }
+  ];
   const shapeOption = netShapeOptions.find((shape) => shape.id === shapeId) || netShapeOptions[0];
   const shape = useMemo(() => buildNetShape(shapeOption), [shapeOption]);
 
+  const handleJoyrideCallback = (data) => {
+    const { status } = data;
+    const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
+    if (finishedStatuses.includes(status)) {
+      setRunTour(false);
+    }
+  };
+
   return (
     <PageLayout>
-   
-
+      <Joyride
+        steps={tourSteps}
+        run={runTour}
+        continuous
+        showSkipButton
+        callback={handleJoyrideCallback}
+        styles={{
+          options: {
+            primaryColor: '#3b82f6',
+          },
+        }}
+      />
       <div className="simulation-container spatial-workspace">
         <section className="canvas-panel spatial-canvas-panel">
           <Canvas
@@ -25,19 +76,21 @@ export default function SpatialNetSimulation() {
             dpr={[1, 2]}
             gl={{ antialias: true }}
           >
-            <color attach="background" args={['#111827']} />
-            <ambientLight intensity={0.65} />
-            <directionalLight position={[5, 7, 4]} intensity={1.2} castShadow />
-            <directionalLight position={[-4, 3, -5]} intensity={0.45} />
-            <gridHelper args={[9, 18, '#334155', '#1f2937']} position={[0, -0.015, 0]} />
-            <NetModel
-              key={shape.id}
-              shape={shape}
-              targetProgress={progress / 100}
-              autoPlay={autoPlay}
-              onAutoProgress={(value) => setProgress(value)}
-            />
-            <OrbitControls enableDamping makeDefault />
+            <XR store={store}>
+              <color attach="background" args={['#111827']} />
+              <ambientLight intensity={0.65} />
+              <directionalLight position={[5, 7, 4]} intensity={1.2} castShadow />
+              <directionalLight position={[-4, 3, -5]} intensity={0.45} />
+              <gridHelper args={[9, 18, '#334155', '#1f2937']} position={[0, -0.015, 0]} />
+              <NetModel
+                key={shape.id}
+                shape={shape}
+                targetProgress={progress / 100}
+                autoPlay={autoPlay}
+                onAutoProgress={(value) => setProgress(value)}
+              />
+              <OrbitControls enableDamping makeDefault />
+            </XR>
           </Canvas>
         </section>
 
@@ -108,9 +161,16 @@ export default function SpatialNetSimulation() {
             >
               Trải phẳng
             </button>
+            <button
+              className="btn-action bg-purple-600 text-white mt-2 w-full"
+              type="button"
+              onClick={() => store.enterAR()}
+            >
+              Xem AR
+            </button>
           </div>
 
-          <div className="math-display spatial-info">
+          <div className="math-display spatial-info mt-4">
             <strong>{shape.name}</strong>
             <span>{shape.formula}</span>
             <small>{shape.note}</small>

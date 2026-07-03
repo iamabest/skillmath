@@ -233,27 +233,28 @@ export default function SymmetrySimulation() {
         ctx.restore();
 
         if (isAnimating) {
+          // Nửa trên cố định
           ctx.save();
           ctx.rotate(activeAxis.angle);
-
-          ctx.save();
           ctx.beginPath();
-          ctx.rect(-centerX, -centerY, canvas.width, centerY);
+          ctx.rect(-canvas.width, -canvas.height, canvas.width * 2, canvas.height);
           ctx.clip();
+          ctx.rotate(-activeAxis.angle);
           drawShape(ctx, shape);
           ctx.restore();
 
+          // Nửa dưới gấp lên
           ctx.save();
+          ctx.rotate(activeAxis.angle);
           ctx.scale(1, Math.cos(progress * Math.PI));
           ctx.beginPath();
-          ctx.rect(-centerX, 0, canvas.width, centerY);
+          ctx.rect(-canvas.width, 0, canvas.width * 2, canvas.height);
           ctx.clip();
+          ctx.rotate(-activeAxis.angle);
           drawShape(ctx, shape, {
             strokeStyle: "rgba(245, 158, 11, 0.9)",
             fillStyle: "rgba(245, 158, 11, 0.4)",
           });
-          ctx.restore();
-
           ctx.restore();
         } else {
           drawShape(ctx, shape);
