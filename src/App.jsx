@@ -29,7 +29,7 @@ const componentMap = {
   "lop7-duong-dong-quy": TriangleConcurrencySimulation,
   "lop6-truc-so-nguyen": NumberLineSimulation,
   "lop6-doi-xung-hinh-phang": SymmetrySimulation,
-  "lop6-sang-eratosthenes": EratosthenesSimulation,
+  "lop6-so-nguyen-to": EratosthenesSimulation,
   "lop6-phan-so-lat-cat": FractionSliceSimulation,
   "lop9-thiet-dien-hinh-khoi": ClippingPlanesSimulation,
   "xac-suat-thong-ke": ProbSim,
@@ -43,7 +43,6 @@ export default function App() {
       {allSimulations.map((sim) => {
         const Component = componentMap[sim.slug];
         if (!Component) return null;
-        
         return (
           <Route
             key={sim.slug}

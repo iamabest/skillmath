@@ -79,18 +79,18 @@ export default function FractionSliceSimulation() {
             Khám phá mối liên hệ giữa phân số, số thập phân và tỷ số phần trăm thông qua lát cắt 3D trực quan.
           </p>
 
-          <div className="bg-gray-800 p-6 rounded-lg mb-6 border border-gray-700 shadow-inner">
-            <h3 className="text-ml font-semibold mb-4 text-white">Kết quả tương đương:</h3>
+          <div className="stat-box">
+            <h3 className="text-ml font-semibold mb-4 text-white ">Kết quả tương đương:</h3>
             
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="bg-gray-900 p-4 rounded border border-gray-600">
                 <p className="text-sm text-gray-400 mb-2">Phần trăm</p>
-                <p className="text-3xl font-bold text-pink-400">{percentage}%</p>
+                <p className="text-2xl font-bold text-pink-400">{percentage}%</p>
               </div>
               
               <div className="bg-gray-900 p-4 rounded border border-gray-600">
                 <p className="text-sm text-gray-400 mb-2">Số thập phân</p>
-                <p className="text-3xl font-bold text-blue-400">{decimal}</p>
+                <p className="text-2xl font-bold text-blue-400">{decimal}</p>
               </div>
               
               <div className="bg-gray-900 p-4 rounded border border-gray-600 flex flex-col items-center justify-center">
@@ -112,7 +112,7 @@ export default function FractionSliceSimulation() {
             </div>
           </div>
           
-          <div className="absolute inset-x-0 bottom-0 h-16">
+          <div className="info-box">
             <p className="text-sm text-blue-200">
               💡 <strong>Mẹo:</strong> Kéo thanh trượt bên phải để thay đổi tỷ lệ lát cắt. Bạn có thể dùng chuột để xoay khối 3D.
             </p>

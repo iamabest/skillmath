@@ -191,13 +191,13 @@ export default function EratosthenesSimulation() {
         <section className="control-panel">
           <h2 className="panel-title text-2xl font-bold mb-4">Tìm số nguyên 3D</h2>
 
-          <div className="bg-gray-800 p-4 rounded-lg mb-6 border border-gray-700">
+          <div className="stat-box">
             <p className="text-lg font-medium text-blue-300">{message}</p>
           </div>
 
           <div className="button-row flex gap-4">
             <button
-              className="btn-action bg-green-600 text-white px-4 py-2 rounded font-semibold disabled:opacity-50"
+              className="btn-action bg-gr een-600 text-white px-4 py-2 rounded font-semibold disabled:opacity-50"
               onClick={runSieve}
               disabled={isRunning}
             >
@@ -212,7 +212,7 @@ export default function EratosthenesSimulation() {
             </button>
           </div>
 
-          <div className="mt-8">
+          <div className="info-box">
             <h3 className="font-semibold mb-2">Chú giải:</h3>
             <div className="flex items-center gap-2 mb-1">
               <div className="w-4 h-4 bg-blue-500 rounded"></div>

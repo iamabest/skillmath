@@ -122,7 +122,7 @@ export default function ClippingPlanesSimulation() {
             </ul>
           </div>
           
-          <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-800/50">
+          <div className="info-box">
             <p className="text-sm text-blue-200">
               💡 <strong>Mẹo:</strong> Kéo các thanh trượt bên phải để thay đổi vị trí và độ nghiêng của mặt phẳng cắt. Dùng chuột để xoay và nhìn từ trên xuống để thấy rõ hình dạng thiết diện.
             </p>

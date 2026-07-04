@@ -26,12 +26,12 @@ export const simulationsByGrade = [
           "Cắt, gấp và kiểm tra trục đối xứng, tâm đối xứng của các hình phẳng thường gặp qua thao tác tương tác.",
       },
       {
-        slug: "lop6-sang-eratosthenes",
-        title: "Tim số nguyên tố",
+        slug: "lop6-so-nguyen-to",
+        title: "Tìm số nguyên tố",
         tags: ["Số học", "3D"],
         tagType: "algebra",
         status: "Sẵn sàng",
-        url: "/simulations/lop6-sang-eratosthenes",
+        url: "/simulations/lop6-so-nguyen-to",
         description:
           "Trực quan hóa quá trình tìm số nguyên tố bằng cách loại bỏ các hợp số trong không gian 3D.",
       },
