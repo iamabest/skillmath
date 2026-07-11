@@ -26,24 +26,34 @@ export const simulationsByGrade = [
           "Cắt, gấp và kiểm tra trục đối xứng, tâm đối xứng của các hình phẳng thường gặp qua thao tác tương tác.",
       },
       {
-        slug: "lop6-so-nguyen-to",
-        title: "Tìm số nguyên tố",
+        slug: "lop6-sang-eratosthenes",
+        title: "Số nguyên tố",
         tags: ["Số học", "3D"],
         tagType: "algebra",
         status: "Sẵn sàng",
-        url: "/simulations/lop6-so-nguyen-to",
+        url: "/simulations/lop6-sang-eratosthenes",
         description:
           "Trực quan hóa quá trình tìm số nguyên tố bằng cách loại bỏ các hợp số trong không gian 3D.",
       },
       {
         slug: "lop6-phan-so-lat-cat",
-        title: "Phân số và Lát cắt 3D",
+        title: "Phân số",
         tags: ["Số học", "3D"],
         tagType: "algebra",
         status: "Sẵn sàng",
         url: "/simulations/lop6-phan-so-lat-cat",
         description:
           "Cắt hình trụ và hình tròn theo tỷ lệ phần trăm để hiểu rõ mối quan hệ giữa phân số, số thập phân và phần trăm.",
+      },
+      {
+        slug: "lop6-thuoc-do-goc",
+        title: "Thước đo góc tương tác",
+        tags: ["Hình học", "Mới"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop6-thuoc-do-goc",
+        description:
+          "Học đo góc bằng thước đo góc ảo tương tác, xoay thước đo và đọc số đo các góc từ dễ đến khó.",
       },
     ],
   },
@@ -68,12 +78,42 @@ export const simulationsByGrade = [
       {
         slug: "lop7-duong-dong-quy",
         title: "Ba đường đồng quy trong tam giác",
-        tags: ["Hình học", "Hoạt động"],
+        tags: ["Hình học", "Mới"],
         tagType: "geometry",
         status: "Sẵn sàng",
         url: "/simulations/lop7-duong-dong-quy",
         description:
           "Kéo thả các đỉnh tam giác để thấy trực quan trọng tâm, trực tâm và các đường đặc biệt luôn đồng quy.",
+      },
+      {
+        slug: "lop7-can-don-ti-le",
+        title: "Cân đòn Tỉ lệ thức 3D",
+        tags: ["Số học", "3D"],
+        tagType: "algebra",
+        status: "Sẵn sàng",
+        url: "/simulations/lop7-can-don-ti-le",
+        description:
+          "Mô phỏng cân đòn 3D trực quan để hiểu tỉ lệ thức: cân thăng bằng khi và chỉ khi a/b = c/d.",
+      },
+      {
+        slug: "lop7-cat-tuyen-goc",
+        title: "Góc tạo bởi cát tuyến cắt 2 đường thẳng",
+        tags: ["Hình học", "Hoạt động"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop7-cat-tuyen-goc",
+        description:
+          "Tìm hiểu các góc so le trong, đồng vị, trong cùng phía khi một đường thẳng cắt hai đường thẳng song song.",
+      },
+      {
+        slug: "lop7-dung-tam-giac",
+        title: "Xưởng lắp ráp tam giác",
+        tags: ["Hình học", "Hoạt động"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop7-dung-tam-giac",
+        description:
+          "Tự tay nhập độ dài 3 cạnh để dựng tam giác, khám phá bất đẳng thức tam giác thông qua hình ảnh trực quan sinh động.",
       },
     ],
   },
@@ -111,6 +151,36 @@ export const simulationsByGrade = [
         url: "/simulations/lop8-do-thi-bac-nhat",
         description:
           "Khám phá độ dốc, tung độ gốc và giao điểm với trục tọa độ qua các thanh trượt thời gian thực.",
+      },
+      {
+        slug: "lop8-pitago-chat-long",
+        title: "Định lý Pitago bằng chất lỏng",
+        tags: ["Hình học", "Mới"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop8-pitago-chat-long",
+        description:
+          "Chứng minh a² + b² = c² bằng mô phỏng nước chảy từ bình cạnh huyền lấp đầy hai bình hai cạnh góc vuông.",
+      },
+      {
+        slug: "lop8-tien-hoa-tu-giac",
+        title: "Cỗ máy tiến hóa Tứ giác",
+        tags: ["Hình học", "Hoạt động"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop8-tien-hoa-tu-giac",
+        description:
+          "Tự động và thủ công co giãn tứ giác để xem sự tiến hóa từ Tứ giác thường thành Hình bình hành, Hình chữ nhật, Hình thoi và Hình vuông.",
+      },
+      {
+        slug: "lop8-thales-do-chieu-cao",
+        title: "Đo chiều cao bằng định lý Thales",
+        tags: ["Hình học", "Hoạt động"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop8-thales-do-chieu-cao",
+        description:
+          "Sử dụng định lý Thales và tam giác đồng dạng để đo chiều cao gián tiếp của một cái cây dựa vào bóng mặt trời.",
       },
     ],
   },
@@ -159,6 +229,36 @@ export const simulationsByGrade = [
         status: "Sẵn sàng",
         url: "/simulations/lop9-thiet-dien-hinh-khoi",
         description: "Dùng mặt phẳng cắt (clipping plane) cắt qua các khối 3D để khám phá thiết diện được tạo thành.",
+      },
+      {
+        slug: "lop9-duong-tron-luong-giac",
+        title: "Đường tròn lượng giác 3D",
+        tags: ["Hàm số", "MỚi"],
+        tagType: "algebra",
+        status: "Sẵn sàng",
+        url: "/simulations/lop9-duong-tron-luong-giac",
+        description:
+          "Di chuyển điểm trên đường tròn đơn vị để khám phá giá trị sin, cos và đồ thị hàm số lượng giác.",
+      },
+      {
+        slug: "lop9-vi-tri-duong-tron",
+        title: "Vị trí tương đối của hai đường tròn",
+        tags: ["Đường tròn", "Mới"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop9-vi-tri-duong-tron",
+        description:
+          "Thay đổi khoảng cách tâm và bán kính để xem 5 vị trí tương đối giữa hai đường tròn: ngoài nhau, tiếp xúc, cắt nhau...",
+      },
+      {
+        slug: "lop9-he-phuong-trinh",
+        title: "Hệ phương trình bậc nhất hai ẩn",
+        tags: ["Đại số", "Mới"],
+        tagType: "algebra",
+        status: "Mới",
+        url: "/simulations/lop9-he-phuong-trinh",
+        description:
+          "Trực quan hóa hệ hai phương trình bậc nhất hai ẩn dưới dạng hai đường thẳng giao nhau để tìm nghiệm.",
       },
     ],
   },

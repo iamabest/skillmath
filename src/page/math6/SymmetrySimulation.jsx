@@ -384,7 +384,7 @@ export default function SymmetrySimulation() {
   return (
     <PageLayout>
       <div className="simulation-container">
-        <div className="canvas-panel" style={{ minHeight: "460px" }}>
+        <div className="canvas-panel">
           <canvas
             ref={canvasRef}
             id="symmetryCanvas"

@@ -152,7 +152,7 @@ export default function EratosthenesSimulation() {
       <div className="simulation-container" >
         
         {/* SỬA LỖI: Thêm minHeight và width cụ thể cho thẻ bọc ngoài Canvas */}
-        <section className="canvas-panel" style={{ height: '600px', width: '100%', backgroundColor: '#111827', borderRadius: '8px', overflow: 'hidden' }}>
+        <section className="canvas-panel">
           <Canvas camera={{ position: [0, 2, 12], fov: 50 }}>
             <ambientLight intensity={0.6} />
             <directionalLight

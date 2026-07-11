@@ -7,6 +7,7 @@
   --bg-card: rgba(30, 41, 59, 0.4);
   --border-color: rgba(255, 255, 255, 0.08);
 
+
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
@@ -483,7 +484,7 @@ h4 {
   flex-direction: column;
   align-items: center;
   position: relative;
-  min-height: 500px;
+  /* min-height: 400px; */
 }
 
 .control-panel {
