@@ -487,16 +487,6 @@ h4 {
   /* min-height: 400px; */
 }
 
-.control-panel {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
 .control-group {
   display: flex;
   flex-direction: column;
@@ -973,22 +963,6 @@ footer {
   width: 80px;
 }
 
-/* ── Run-many controls ── */
-.run-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-/* ── Run-many controls ── */
-.run-row {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 0.25rem;
-}
 /* ── History bar ── */
 .history-bar {
   display: flex;
