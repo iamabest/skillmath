@@ -37,6 +37,7 @@ const CoordinateMapSimulation = lazy(() => import("./page/math6/CoordinateMapSim
 const LinearProportionSimulation = lazy(() => import("./page/math7/LinearProportionSimulation"));
 const TriangleAnglesSimulation = lazy(() => import("./page/math7/TriangleAnglesSimulation"));
 const RealNumberLineSimulation = lazy(() => import("./page/math7/RealNumberLineSimulation"));
+const CongruentTrianglesSimulation = lazy(() => import("./page/math7/CongruentTrianglesSimulation"));
 const AlgebraIdentities2Simulation = lazy(() => import("./page/math8/AlgebraIdentities2Simulation"));
 const EquationBalanceSimulation = lazy(() => import("./page/math8/EquationBalanceSimulation"));
 const SimilarFiguresSimulation = lazy(() => import("./page/math8/SimilarFiguresSimulation"));
@@ -92,6 +93,7 @@ const componentMap: Record<string, React.LazyExoticComponent<any>> = {
   "lop7-ham-so-y-ax": LinearProportionSimulation,
   "lop7-goc-trong-tam-giac": TriangleAnglesSimulation,
   "lop7-so-thuc-truc-so": RealNumberLineSimulation,
+  "lop7-hai-tam-giac-bang-nhau": CongruentTrianglesSimulation,
   "lop8-hang-dang-thuc-2": AlgebraIdentities2Simulation,
   "lop8-phuong-trinh-can-bang": EquationBalanceSimulation,
   "lop8-hinh-dong-dang": SimilarFiguresSimulation,

@@ -189,6 +189,15 @@ export const simulationsByGrade: GradeGroup[] = [
         status: "Sẵn sàng",
         url: "/simulations/lop7-so-thuc-truc-so",
         description: "Biểu diễn số hữu tỉ và số vô tỉ (√2, π) trên trục số thực, phóng to để xem chi tiết."
+      },
+      {
+        slug: "lop7-hai-tam-giac-bang-nhau",
+        title: "Hai tam giác bằng nhau",
+        tags: ["Hình học", "Mới", "Hoạt động"],
+        tagType: "geometry",
+        status: "Sẵn sàng",
+        url: "/simulations/lop7-hai-tam-giac-bang-nhau",
+        description: "Khám phá các trường hợp bằng nhau (c-c-c, c-g-c, g-c-g và tam giác vuông) qua chuyển động ghép chồng khít và câu hỏi tương tác."
       }
     ],
   },
@@ -461,6 +470,4 @@ export function getAllSimulations(): SimulationItem[] {
 // export function findSimulation(slug) {
 //   return getAllSimulations().find((simulation) => simulation.slug === slug);
 // }
-export const allSimulations: SimulationItem[] = simulationsByGrade.flatMap(
-  grade => grade.simulations
-);
+export const allSimulations: SimulationItem[] = getAllSimulations();
