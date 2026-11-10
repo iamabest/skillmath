@@ -7,13 +7,29 @@ import React, {
 } from "react";
 import PageLayout from "../../components/PageLayout";
 
-const SHAPES: Record<string, {
+interface SymmetryAxis {
+  name: string;
+  angle: number;
+}
+
+interface ShapeStyle {
+  strokeStyle?: string;
+  fillStyle?: string;
+  lineWidth?: number;
+  lineDash?: number[];
+}
+
+interface ShapeConfig {
   name: string;
   description: string;
-  axes: { name: string; angle: number }[];
+  axes: SymmetryAxis[];
   hasCenter: boolean;
+  hasInfiniteAxes?: boolean;
+  markerPoint: { x: number; y: number };
   draw: (size?: number) => Path2D;
-}> = {
+}
+
+const SHAPES: Record<string, ShapeConfig> = {
   square: {
     name: "Hình vuông",
     description:
@@ -25,6 +41,7 @@ const SHAPES: Record<string, {
       { name: "Đường chéo phụ", angle: -Math.PI / 4 },
     ],
     hasCenter: true,
+    markerPoint: { x: -75, y: -75 },
     draw: (size = 150) => {
       const half = size / 2;
       const p = new Path2D();
@@ -41,6 +58,7 @@ const SHAPES: Record<string, {
       { name: "Đường trung trực dọc", angle: Math.PI / 2 },
     ],
     hasCenter: true,
+    markerPoint: { x: -90, y: -60 },
     draw: (size = 150) => {
       const width = size * 1.2;
       const height = size * 0.8;
@@ -59,6 +77,7 @@ const SHAPES: Record<string, {
       { name: "Đường cao xiên phải", angle: Math.PI / 2 - Math.PI / 3 },
     ],
     hasCenter: false,
+    markerPoint: { x: 0, y: -95 },
     draw: (size = 160) => {
       const height = (size * Math.sqrt(3)) / 2;
       const topY = (-2 * height) / 3; // centroid at origin
@@ -80,6 +99,7 @@ const SHAPES: Record<string, {
       { name: "Đường chéo dọc", angle: Math.PI / 2 },
     ],
     hasCenter: true,
+    markerPoint: { x: -95, y: 0 },
     draw: (size = 150) => {
       const width = size * 1.3;
       const height = size * 0.8;
@@ -98,6 +118,7 @@ const SHAPES: Record<string, {
       "Hình bình hành **KHÔNG có trục đối xứng** nào (khi gấp đôi hình theo bất kỳ đường nào đều không khớp) nhưng **có tâm đối xứng** (giao điểm hai đường chéo).",
     axes: [],
     hasCenter: true,
+    markerPoint: { x: -55, y: -60 },
     draw: (size = 150) => {
       const width = size * 1.2;
       const height = size * 0.8;
@@ -131,6 +152,7 @@ const SHAPES: Record<string, {
       { name: "Trục chéo 150° qua đỉnh", angle: (5 * Math.PI) / 6 },
     ],
     hasCenter: true,
+    markerPoint: { x: -95, y: 0 },
     draw: (size = 95) => {
       const p = new Path2D();
       for (let i = 0; i < 6; i += 1) {
@@ -144,9 +166,32 @@ const SHAPES: Record<string, {
       return p;
     },
   },
+  circle: {
+    name: "Hình tròn",
+    description:
+      "Hình tròn có **vô số trục đối xứng** (mọi đường thẳng đi qua tâm đều là trục đối xứng) và **có tâm đối xứng** (chính là tâm O của hình tròn).",
+    axes: [
+      { name: "Đường kính ngang (0°)", angle: 0 },
+      { name: "Đường kính chéo (45°)", angle: Math.PI / 4 },
+      { name: "Đường kính dọc (90°)", angle: Math.PI / 2 },
+      { name: "Đường kính chéo (135°)", angle: (3 * Math.PI) / 4 },
+    ],
+    hasCenter: true,
+    hasInfiniteAxes: true,
+    markerPoint: { x: 0, y: -95 },
+    draw: (size = 95) => {
+      const p = new Path2D();
+      p.arc(0, 0, size, 0, Math.PI * 2);
+      return p;
+    },
+  },
 };
 
-function drawShape(ctx: CanvasRenderingContext2D, shape: any, style: any = {}) {
+function drawShape(
+  ctx: CanvasRenderingContext2D,
+  shape: ShapeConfig,
+  style: ShapeStyle = {},
+) {
   ctx.save();
   ctx.strokeStyle = style.strokeStyle || "#3b82f6";
   ctx.fillStyle = style.fillStyle || "rgba(59, 130, 246, 0.2)";
@@ -174,6 +219,7 @@ export default function SymmetrySimulation() {
   const [shapeKey, setShapeKey] = useState("square");
   const [mode, setMode] = useState("axial");
   const [axisIndex, setAxisIndex] = useState(0);
+  const [customAngleDeg, setCustomAngleDeg] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -192,8 +238,23 @@ export default function SymmetrySimulation() {
   });
 
   const shape = SHAPES[shapeKey];
-  const activeAxis = shape.axes[axisIndex] || null;
+  const activeAxis = useMemo(() => {
+    if (shape.hasInfiniteAxes) {
+      return {
+        name: `Đường kính (${customAngleDeg}°)`,
+        angle: (customAngleDeg * Math.PI) / 180,
+      };
+    }
+    return shape.axes[axisIndex] || null;
+  }, [axisIndex, customAngleDeg, shape]);
   const canAnimate = mode === "axial" ? Boolean(activeAxis) : shape.hasCenter;
+
+  const matchingPresetIndex = useMemo(() => {
+    if (!shape.hasInfiniteAxes) return axisIndex;
+    return shape.axes.findIndex(
+      (axis) => Math.round((axis.angle * 180) / Math.PI) === customAngleDeg,
+    );
+  }, [axisIndex, customAngleDeg, shape]);
 
   const descriptionHtml = useMemo(
     () =>
@@ -272,6 +333,21 @@ export default function SymmetrySimulation() {
         } else {
           drawShape(ctx, shape);
         }
+
+        if (shape.hasInfiniteAxes) {
+          ctx.save();
+          ctx.fillStyle = "#10b981";
+          ctx.beginPath();
+          ctx.arc(0, 0, 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.rotate(activeAxis.angle);
+          ctx.fillStyle = "#e2e8f0";
+          ctx.font = "600 13px Inter, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("O", 0, -14);
+          ctx.restore();
+        }
       } else {
         drawShape(ctx, shape, {
           strokeStyle: "#94a3b8",
@@ -300,22 +376,20 @@ export default function SymmetrySimulation() {
           ? "rgba(245, 158, 11, 0.3)"
           : "rgba(59, 130, 246, 0.2)",
       });
+      if (shape.hasInfiniteAxes) {
+        ctx.save();
+        ctx.strokeStyle = "rgba(239, 68, 68, 0.5)";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(shape.markerPoint.x, shape.markerPoint.y);
+        ctx.stroke();
+        ctx.restore();
+      }
       ctx.beginPath();
       ctx.fillStyle = "#ef4444"; // Màu đỏ nổi bật
-      // Vẽ tại điểm cao nhất của hình (giả định hình có kích thước khoảng 75-80 đơn vị từ tâm)
-      if (shapeKey === "square") {
-        ctx.arc(-75, -75, 6, 0, Math.PI * 2);
-      } else if (shapeKey === "rectangle") {
-        ctx.arc(-90, -60, 6, 0, Math.PI * 2);
-      } else if (shapeKey === "equiTriangle") {
-        ctx.arc(0, -95, 6, 0, Math.PI * 2);
-      } else if (shapeKey === "hexagon") {
-        ctx.arc(-95, 0, 6, 0, Math.PI * 2);
-      } else if (shapeKey === "rhombus") {
-        ctx.arc(-95, 0, 6, 0, Math.PI * 2);
-      } else {
-        ctx.arc(-55, -60, 6, 0, Math.PI * 2);
-      }
+      ctx.arc(shape.markerPoint.x, shape.markerPoint.y, 6, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
@@ -388,6 +462,7 @@ export default function SymmetrySimulation() {
     clearAnimation();
     setIsAnimating(false);
     setAxisIndex(0);
+    setCustomAngleDeg(0);
   }, [clearAnimation, mode, shapeKey]);
 
   useEffect(() => {
@@ -469,25 +544,88 @@ export default function SymmetrySimulation() {
                 <select
                   id="axisSelect"
                   className="select-control"
-                  value={axisIndex}
+                  value={
+                    shape.hasInfiniteAxes
+                      ? matchingPresetIndex !== -1
+                        ? String(matchingPresetIndex)
+                        : "custom"
+                      : String(axisIndex)
+                  }
                   disabled={isAnimating}
-                  onChange={(e) => setAxisIndex(Number(e.target.value))}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === "custom") return;
+                    const idx = Number(val);
+                    setAxisIndex(idx);
+                    if (shape.hasInfiniteAxes) {
+                      setCustomAngleDeg(
+                        Math.round((shape.axes[idx].angle * 180) / Math.PI),
+                      );
+                    }
+                  }}
                 >
                   {shape.axes.map((axis, index) => (
                     <option key={axis.name} value={index}>
                       {axis.name}
                     </option>
                   ))}
+                  {shape.hasInfiniteAxes && matchingPresetIndex === -1 && (
+                    <option value="custom">
+                      Đường kính tùy chỉnh ({customAngleDeg}°)
+                    </option>
+                  )}
                 </select>
               ) : (
                 <div className="info-box">
                   Hình này không có trục đối xứng để chọn.
                 </div>
               )}
+              {shape.hasInfiniteAxes && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.35rem",
+                    marginTop: "0.25rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "0.85rem",
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    <label htmlFor="circleAxisSlider">
+                      Xoay trục qua tâm O bất kỳ
+                    </label>
+                    <span
+                      style={{
+                        color: "var(--color-primary)",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {customAngleDeg}°
+                    </span>
+                  </div>
+                  <input
+                    id="circleAxisSlider"
+                    type="range"
+                    min={0}
+                    max={180}
+                    step={1}
+                    value={customAngleDeg}
+                    disabled={isAnimating}
+                    onChange={(e) => setCustomAngleDeg(Number(e.target.value))}
+                    style={{ width: "100%", accentColor: "#ef4444" }}
+                  />
+                </div>
+              )}
               <button
                 className="btn-action"
                 type="button"
-                disabled={isAnimating || shape.axes.length === 0}
+                disabled={isAnimating || !activeAxis}
                 onClick={() => startAnimation("fold")}
               >
                 {isAnimating ? "Đang gấp..." : "Gấp hình"}
